@@ -34,7 +34,47 @@ namespace Ejercicio_integrador_laboII
             }
             else
             {
-                this.SetResultado();
+                calculadora = new Operacion(primerOperando, segundoOperando);
+
+                switch (cmbOperacion.SelectedIndex)
+                {
+                    case 0:
+                        MessageBox.Show("seleccione una operación", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        break;
+
+                    case 1:
+                        resultado = calculadora.Operar('+');
+                        SetResultado();                      
+                        break;
+
+                    case 2:
+                        resultado = calculadora.Operar('-');
+                        SetResultado();
+                        break;
+
+                    case 3:
+                        resultado = calculadora.Operar('*');
+                        SetResultado();
+                        break;
+
+                    case 4:
+                        if (txtSegundoOperador.Text == "0")
+                        {
+                            MessageBox.Show("No se puede Dividir por cero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            resultado = calculadora.Operar('/');
+                            SetResultado();
+                        }
+                        break;
+
+                    default:
+                        MessageBox.Show("seleccione una operación", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+
+                }
             }
 
         }
@@ -60,15 +100,11 @@ namespace Ejercicio_integrador_laboII
         {
             foreach (Control control in grpSistema.Controls)
             {
-                if (control is RadioButton && rdbBinario.Checked && resultado is not null)
+                if (control is RadioButton && rdbBinario.Checked)
                 {
-                    lblResultado.Text = "Resultado: " + resultado.ConvertirA(Numeracion.ESistema.Binario);
-                }
-                else if (resultado is null && rdbBinario.Checked)
-                {
-                    MessageBox.Show("no hay numero para convertir", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    rdbBinario.Checked = false;
-                }
+                    sistema = Numeracion.ESistema.Binario;
+                   
+                }              
             }
         }
 
@@ -76,62 +112,27 @@ namespace Ejercicio_integrador_laboII
         {
             foreach (Control control in grpSistema.Controls)
             {
-                if (control is RadioButton && rdbDecimal.Checked && resultado is not null)
+                if (control is RadioButton && rdbDecimal.Checked)
                 {
-                    lblResultado.Text = "Resultado: " + resultado.ConvertirA(Numeracion.ESistema.Decimal);
-                }
-                else if (resultado is null && rdbDecimal.Checked)
-                {
-                    MessageBox.Show("no hay numero para convertir", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    rdbDecimal.Checked = false;
-
+                    sistema = Numeracion.ESistema.Decimal;
+                    
                 }
             }
         }
 
         private void SetResultado()
         {
-            calculadora = new Operacion(primerOperando, segundoOperando);
-
-            switch (cmbOperacion.SelectedIndex)
+            
+            if(resultado is not null && (rdbDecimal.Checked || rdbBinario.Checked))
             {
-                case 0:
-                    MessageBox.Show("seleccione una operación", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    break;
-
-                case 1:
-                    resultado = calculadora.Operar('+');
-                    lblResultado.Text = "Resultado: " + resultado.GetValor();
-                    break;
-
-                case 2:
-                    resultado = calculadora.Operar('-');
-                    lblResultado.Text = "Resultado: " + resultado.GetValor();
-                    break;
-
-                case 3:
-                    resultado = calculadora.Operar('*');
-                    lblResultado.Text = "Resultado: " + resultado.GetValor();
-                    break;
-
-                case 4:
-                    if (txtSegundoOperador.Text == "0")
-                    {
-                        MessageBox.Show("No se puede Dividir por cero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {
-                        resultado = calculadora.Operar('/');
-                        lblResultado.Text = "Resultado: " + resultado.GetValor();
-                    }
-                    break;
-
-                default:
-                    MessageBox.Show("seleccione una operación", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
+                lblResultado.Text = "Resultado: " + resultado.ConvertirA(sistema);
+            }
+            else
+            {
+                MessageBox.Show("Seleccione sistema decimal o binario", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
+
         }
 
         private void txtPrimerOperador_TextChanged(object sender, EventArgs e)

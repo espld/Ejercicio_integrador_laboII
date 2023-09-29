@@ -40,25 +40,18 @@ namespace Entidades
             switch (operador)
             {
                 case '-':
-
                     return primerOperando - segundoOperando;
-                    break;
-
-
+                   
                 case '*':
                     return primerOperando * segundoOperando;
-                    break;
-
+                    
                 case '/':
                     return primerOperando / segundoOperando;
-                    break;
-
+                    
                 default:
-                    return primerOperando + segundoOperando;
-                    break;
-
+                    return primerOperando + segundoOperando;                   
             }
-
         }
+
     }
 }
